@@ -1,11 +1,18 @@
-import React from "react";
-import { View } from "react-native";
+import React, { useContext } from "react";
+import { View, Text } from "react-native";
+import { RectButton } from "react-native-gesture-handler";
+import AuthContext from "../../contexts/auth";
+import { PageView } from "./styles";
 
 const MyProfile = () => {
-    return (
-        <View>
+    const { logOut } = useContext(AuthContext);
 
-        </View>
+    return (
+        <PageView>
+            <RectButton onPress={logOut}>
+                <Text>Sair</Text>
+            </RectButton>
+        </PageView>
     );
 }
 

@@ -11,7 +11,7 @@ const Pius:React.FC<PiusProps> = ({ pius }) => {
     return (
         <PiusView>
             {pius.map((piu: PiuTagProps) =>{
-                return <PiuTag piu={piu.piu} favorite={piu.favorite} liked={piu.liked} />
+                return <PiuTag key={piu.key} piu={piu.piu} />
             })}
         </PiusView>
     );

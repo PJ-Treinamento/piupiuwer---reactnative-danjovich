@@ -4,9 +4,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
+import { NavigationContainer } from '@react-navigation/native';
 import { Lato_400Regular_Italic, Lato_400Regular, Lato_700Bold } from '@expo-google-fonts/lato';
 import { YesevaOne_400Regular } from '@expo-google-fonts/yeseva-one';
-import AppStack from './src/routes/AppStack';
+import Routes from './src/routes';
+import { AuthProvider } from './src/contexts/auth';
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -20,10 +22,12 @@ export default function App() {
     return <AppLoading />;
   } else {
     return (
-      <>
-        <AppStack />
-        <StatusBar style="light" />
-      </>
+      <NavigationContainer>
+        <AuthProvider>
+          <Routes />
+          <StatusBar />
+        </AuthProvider>
+      </NavigationContainer>
     );
   }
 }

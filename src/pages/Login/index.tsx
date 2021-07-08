@@ -1,16 +1,31 @@
-import React, { useState } from "react";
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useCallback, useContext } from "react";
+import { useNavigation } from "@react-navigation/native";
+import * as Yup from 'yup';
+import AuthContext from "../../contexts/auth";
+import api from "../../services/api";
 import Logo from "../../components/Logo";
 
 import * as Styled from "./styles";
 
 const Login = () => {
-    const { navigate } = useNavigation();
+    const { logIn } = useContext(AuthContext);
+    
     const [loginError, setLoginError] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-    const handleLoggingIn = () => {
-        navigate('Tabs');
+    const handleLogIn = () => {
+        logIn(email, password).catch((error) => {
+            console.log(error);
+            setLoginError(true);
+        });
     }
+
+    // TODO: implementar verificação dos inputs com Yup
+    const scheme = Yup.object().shape({
+        email: Yup.string().required('E-mail obrigatorio').email('E-mail invalido'),
+        password: Yup.string().required('Senha obrigatoria')
+    });
 
     return (
         <Styled.PageView>
@@ -20,11 +35,14 @@ const Login = () => {
             <Styled.Form>
                 <Styled.LoginTextInput
                     placeholder="Email"
+                    onChange={(e) => {setEmail(e.nativeEvent.text); console.log(e.nativeEvent.text)}}
                 />
                 <Styled.LoginTextInput
+                    secureTextEntry={true}
                     placeholder="Senha"
+                    onChange={(e) => setPassword(e.nativeEvent.text)}
                 />
-                <Styled.SubmitButton onPress={handleLoggingIn}><Styled.ButtonText>Entrar</Styled.ButtonText></Styled.SubmitButton>
+                <Styled.SubmitButton onPress={handleLogIn}><Styled.ButtonText>Entrar</Styled.ButtonText></Styled.SubmitButton>
             </Styled.Form>
             <Styled.SignInText>Ainda não tem um cadastro? <Styled.Link>Crie uma nova conta.</Styled.Link></Styled.SignInText>
         </Styled.PageView>
