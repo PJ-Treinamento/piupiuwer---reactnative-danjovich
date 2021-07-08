@@ -14,17 +14,24 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogIn = () => {
-        logIn(email, password).catch((error) => {
-            console.log(error);
-            setLoginError(true);
-        });
+    const handleLogIn = async () => {
+        try {
+            await scheme.validate({email, password}, {abortEarly: false});
+            logIn(email, password).catch((error) => {
+                console.log(error);
+                setLoginError(true);
+            });
+        } catch (err) {
+            if (err instanceof Yup.ValidationError) {
+                setLoginError(true);
+            }
+        }
     }
 
     // TODO: implementar verificação dos inputs com Yup
     const scheme = Yup.object().shape({
-        email: Yup.string().required('E-mail obrigatorio').email('E-mail invalido'),
-        password: Yup.string().required('Senha obrigatoria')
+        email: Yup.string().required('E-mail obrigatório').email('E-mail inválido'),
+        password: Yup.string().required('Senha obrigatória')
     });
 
     return (
@@ -35,7 +42,7 @@ const Login = () => {
             <Styled.Form>
                 <Styled.LoginTextInput
                     placeholder="Email"
-                    onChange={(e) => {setEmail(e.nativeEvent.text); console.log(e.nativeEvent.text)}}
+                    onChange={(e) => {setEmail(e.nativeEvent.text)}}
                 />
                 <Styled.LoginTextInput
                     secureTextEntry={true}

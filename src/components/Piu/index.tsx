@@ -70,6 +70,20 @@ const PiuTag: React.FC<PiuTagProps> = ({ piu }) => {
         deletePiu(piu.id);
     }
 
+    const formatedDate = (date: Date) => {
+        let dif = Math.abs(Number(new Date()) - Number(date));
+        let hoursAgo = Math.trunc(dif / 3.6E6);
+        let minutesAgo = Math.trunc(dif / 6E4);
+        if (minutesAgo < 60) {
+            return 'Há ' + String(minutesAgo) + ' minuto(s)';
+        } else if (hoursAgo < 24) {
+            return 'Há ' + String(hoursAgo) + 'h';
+        } else {
+            return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() +
+                ' às ' + date.getHours() + 'h' + ((date.getMinutes() >= 10) ? date.getMinutes() : '0' + date.getMinutes());
+        }
+    }
+
     const ioniconsSize = 32;
     const ioniconsColor = colors.textColor;
     
@@ -79,7 +93,7 @@ const PiuTag: React.FC<PiuTagProps> = ({ piu }) => {
                 <Styled.ProfilePicture source={{ uri: piu.user.photo ? piu.user.photo : 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'}} />
                 <View>
                     <Styled.Name>{piu.user.first_name} {piu.user.last_name} <Styled.Username>@{piu.user.username}</Styled.Username></Styled.Name>
-                    <Styled.DateOfPublication>{piu.created_at}</Styled.DateOfPublication>
+                    <Styled.DateOfPublication>{formatedDate(new Date(piu.created_at))}</Styled.DateOfPublication>
                 </View>
             </Styled.Info>
             <Styled.PiuContent>{piu.text}</Styled.PiuContent>
