@@ -25,7 +25,7 @@ interface UserTagProps {
 const UserTag:React.FC<UserTagProps> = ({ user }) => {
     return (
         <Styled.Info>
-            <Styled.ProfilePicture source={{ uri: user.photo ? user.photo : 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg' }} />
+            <Styled.ProfilePicture source={{ uri: user.photo.trim() ? user.photo : 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg' }} />
             <View>
                 <Styled.Name>{user.first_name} {user.last_name} <Styled.Username>@{user.username}</Styled.Username></Styled.Name>
                 <Styled.About>{user.about}</Styled.About>
